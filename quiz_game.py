@@ -49,7 +49,12 @@ class QuizGame:
         print(f"\n⭐️퀴즈 종료! 당신의 점수는 {self.score}점입니다.⭐️\n")
 
     def show_quiz_list(self):
-        # Show the list of quizzes
+        if not self.quiz_list:
+            print("퀴즈가 없습니다. 퀴즈를 추가해주세요.")
+            return
+        print("\n퀴즈 목록:")
+        for index, quiz in enumerate(self.quiz_list, start=1):
+            print(f"{index}. {quiz.question}")
         pass
 
     def show_score(self):

@@ -13,7 +13,6 @@ def main():
 
             if menu == 1:
                 game.start_quiz()
-                pass
 
             elif menu == 2:
                 game.show_quiz_list()

@@ -30,8 +30,23 @@ class QuizGame:
         return get_int_input("메뉴를 선택하세요: ", 0, 4)
 
     def start_quiz(self):
-        # Start the quiz
-        pass
+        correct_answers = 0
+        if not self.quiz_list:
+            print("퀴즈가 없습니다. 퀴즈를 추가해주세요.")
+            return
+        for quiz in self.quiz_list:
+            print("\n----------------------------------------")
+            quiz.display()
+            user_answer = get_int_input("정답을 선택하세요: ", 1, 4)
+
+            if quiz.check_answer(user_answer):
+                print("\n✅ 정답입니다!\n")
+                correct_answers += 1
+            else:
+                print(f"\n❌ 틀렸습니다. 정답은 {quiz.answer}번입니다.")
+
+        self.score = int(correct_answers / len(self.quiz_list) * 100)
+        print(f"\n⭐️퀴즈 종료! 당신의 점수는 {self.score}점입니다.⭐️\n")
 
     def show_quiz_list(self):
         # Show the list of quizzes

@@ -1,4 +1,5 @@
 from utils import get_int_input
+from default_quizzes import get_default_quizzes
 
 
 MENU = f"""========================================
@@ -13,7 +14,7 @@ MENU = f"""========================================
 
 class QuizGame:
     def __init__(self):
-        self.quiz_list = []
+        self.quiz_list = get_default_quizzes()
         self.score = 0
 
     def load_state(self):

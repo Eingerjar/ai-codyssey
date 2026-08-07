@@ -1,6 +1,7 @@
 from utils import get_int_input
 from default_quizzes import get_default_quizzes
-
+import json
+from quiz import Quiz
 
 MENU = f"""========================================
     🎯 나만의 퀴즈 게임 🎯
@@ -12,21 +13,46 @@ MENU = f"""========================================
     0. 종료
 ========================================"""
 
+STATE_FILE = "state.json"
+
 class QuizGame:
     def __init__(self):
-        self.quiz_list = get_default_quizzes()
+        self.quiz_list = []
         self.best_score = -1
 
     def add_quiz(self):
         pass
 
     def load_state(self):
-        # Load the game state from a file or database
-        pass
+        try:
+            with open(STATE_FILE, "r", encoding="utf-8") as f:
+                data = json.load(f)
+                self.quiz_list = [Quiz.from_dict(quiz_data) for quiz_data in data["quizzes"]]
+                self.best_score = data["best_score"]
+            print("저장된 상태를 불러왔습니다.")
+        except FileNotFoundError:
+            print("저장된 상태가 없습니다. 기본 퀴즈를 불러옵니다.")
+            self.quiz_list = get_default_quizzes()
+            self.save_state()
+        except json.JSONDecodeError:
+            print("저장된 상태를 불러오는 중 오류가 발생했습니다. 기본 퀴즈를 불러옵니다.")
+            self.quiz_list = get_default_quizzes()
+            self.save_state()
+        except Exception as e:
+            print(f"상태를 불러오는 중 오류가 발생했습니다 {type(e).__name__}: {e}. 기본 퀴즈를 불러옵니다.")
+            self.quiz_list = get_default_quizzes()
+            self.save_state()
 
     def save_state(self):
-        # Save the game state to a file or database
-        pass
+        data = {
+            "quizzes": [quiz.to_dict() for quiz in self.quiz_list],
+            "best_score": self.best_score
+        }
+        try:
+            with open(STATE_FILE, "w", encoding="utf-8") as f:
+                json.dump(data, f, ensure_ascii=False, indent=4)
+        except Exception as e:
+            print(f"상태를 저장하는 중 오류가 발생했습니다 {type(e).__name__}: {e}.")
 
     def show_menu(self):
         print(MENU)
@@ -50,7 +76,7 @@ class QuizGame:
         score = int(correct_answers / len(self.quiz_list) * 100)
         if score > self.best_score:
             self.best_score = score
-            # 최고 점수 파일에 저장
+            self.save_state()
         print(f"\n⭐️퀴즈 종료! 당신의 점수는 {score}점입니다.⭐️\n")
 
     def show_quiz_list(self):

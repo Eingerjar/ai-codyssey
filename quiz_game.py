@@ -21,7 +21,17 @@ class QuizGame:
         self.best_score = -1
 
     def add_quiz(self):
-        pass
+        question = input("퀴즈 질문을 입력하세요: ")
+        choices = []
+        for i in range(4):
+            choice = input(f"선택지 {i + 1}를 입력하세요: ")
+            choices.append(choice)
+        answer = get_int_input("정답 번호를 입력하세요 (1-4): ", 1, 4)
+
+        new_quiz = Quiz(question, choices, answer)
+        self.quiz_list.append(new_quiz)
+        self.save_state()
+        print("퀴즈가 추가되었습니다.")
 
     def load_state(self):
         try:

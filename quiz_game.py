@@ -15,7 +15,10 @@ MENU = f"""========================================
 class QuizGame:
     def __init__(self):
         self.quiz_list = get_default_quizzes()
-        self.score = 0
+        self.best_score = -1
+
+    def add_quiz(self):
+        pass
 
     def load_state(self):
         # Load the game state from a file or database
@@ -44,9 +47,11 @@ class QuizGame:
                 correct_answers += 1
             else:
                 print(f"\n❌ 틀렸습니다. 정답은 {quiz.answer}번입니다.")
-
-        self.score = int(correct_answers / len(self.quiz_list) * 100)
-        print(f"\n⭐️퀴즈 종료! 당신의 점수는 {self.score}점입니다.⭐️\n")
+        score = int(correct_answers / len(self.quiz_list) * 100)
+        if score > self.best_score:
+            self.best_score = score
+            # 최고 점수 파일에 저장
+        print(f"\n⭐️퀴즈 종료! 당신의 점수는 {score}점입니다.⭐️\n")
 
     def show_quiz_list(self):
         if not self.quiz_list:
@@ -58,5 +63,7 @@ class QuizGame:
         pass
 
     def show_score(self):
-        # Show the current score
-        pass
+        if self.best_score == -1:
+            print("\n아직 퀴즈를 풀지 않았습니다. 퀴즈를 풀어보세요!\n")
+        else:
+            print(f"\n🏆 최고 점수: {self.best_score}점 🏆\n")

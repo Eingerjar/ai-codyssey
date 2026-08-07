@@ -15,9 +15,12 @@ def main():
                 game.start_quiz()
 
             elif menu == 2:
-                game.show_quiz_list()
+                game.add_quiz()
 
             elif menu == 3:
+                game.show_quiz_list()
+
+            elif menu == 4:
                 game.show_score()
 
             elif menu == 0:

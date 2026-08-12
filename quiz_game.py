@@ -76,7 +76,7 @@ class QuizGame:
         for quiz in self.quiz_list:
             print("\n----------------------------------------")
             quiz.display()
-            user_answer = get_int_input("정답을 선택하세요: ", 1, 4)
+            user_answer = get_int_input("정답을 선택하세요: ", 1, len(quiz.choices))
 
             if quiz.check_answer(user_answer):
                 print("\n✅ 정답입니다!\n")
@@ -96,7 +96,6 @@ class QuizGame:
         print("\n퀴즈 목록:")
         for index, quiz in enumerate(self.quiz_list, start=1):
             print(f"{index}. {quiz.question}")
-        pass
 
     def show_score(self):
         if self.best_score == -1:
